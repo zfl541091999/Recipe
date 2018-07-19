@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.SparseArray;
 import android.view.View;
 
-import com.lsxiao.apllo.annotations.Receive;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.zfl.recipe.R;
 import com.zfl.recipe.entity.RecipeInfo;
 import com.zfl.recipe.entity.recipe_list.RecipeListBean;
@@ -30,7 +30,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * @Description
@@ -39,7 +39,7 @@ import rx.Observable;
  */
 
 public class RecipeFavorActivity extends BaseActivity implements BGARefreshLayout.BGARefreshLayoutDelegate,
-        CommonRecyclerViewAdapter.AdapterTemplate, CommonRecyclerViewAdapter.AdapterObservable
+        CommonRecyclerViewAdapter.AdapterTemplate, CommonRecyclerViewAdapter.AdapterEmitter
 {
 
     @Bind(R.id.tbRecipeFavor)
@@ -196,12 +196,6 @@ public class RecipeFavorActivity extends BaseActivity implements BGARefreshLayou
     }
 
     @Override
-    public void observable(Observable<Object> observable)
-    {
-        //do nothing
-    }
-
-    @Override
     public Map<Class<?>, Integer> getItemViewType()
     {
         Map<Class<?>, Integer> map = new HashMap<>();
@@ -218,9 +212,15 @@ public class RecipeFavorActivity extends BaseActivity implements BGARefreshLayou
     }
 
 
-    @Receive(tag = ConstantUtil.FAVOR_RECIPE_LIST_UPDATE)
+    @Receive(ConstantUtil.FAVOR_RECIPE_LIST_UPDATE)
     public void updateReceived() {
         //来接收收藏菜谱更新的通知
         mPresenter.get(ApiUtil.URL_GET_FAVOR_RECIPE_LIST, RecipeListBean.class, false, false);
+    }
+
+    @Override
+    public void emitter(Observable<Object> observable)
+    {
+        //do nothing
     }
 }

@@ -1,12 +1,12 @@
 package com.zfl.recipe.mvp.model;
 
+import com.zfl.recipe.request.Response;
 import com.zfl.recipe.request.RetrofitClient;
 
 import java.util.Map;
 
+import io.reactivex.disposables.Disposable;
 import okhttp3.Cache;
-import rx.Subscriber;
-import rx.Subscription;
 
 /**
  * @Description
@@ -21,32 +21,32 @@ public class BaseModel
      * @param url
      * @param map
      * @param cache
-     * @param subscriber
+     * @param response
      * @return
      */
-    public Subscription get(String url, Map<String, Object> map, Cache cache, Subscriber subscriber) {
-        return RetrofitClient.getInstance().get(url, map, cache).subscribe(subscriber);
+    public Disposable get(String url, Map<String, Object> map, Cache cache, Response response) {
+        return RetrofitClient.getInstance().get(url, map, cache).subscribe(response.getResponse(), response.getThrowable(), response.getComplete());
     }
 
     /**
      * 通用的请求post方法(不带中文参数)
      * @param url
      * @param map
-     * @param subscriber
+     * @param response
      * @return
      */
-    public Subscription post(String url, Map<String, Object> map, Subscriber subscriber) {
-        return RetrofitClient.getInstance().post(url, map).subscribe(subscriber);
+    public Disposable post(String url, Map<String, Object> map, Response response) {
+        return RetrofitClient.getInstance().post(url, map).subscribe(response.getResponse(), response.getThrowable(), response.getComplete());
     }
 
     /**
      * 通用的请求post方法(带中文参数)
      * @param url
      * @param map
-     * @param subscriber
+     * @param response
      * @return
      */
-    public Subscription postWithChParam(String url, Map<String, Object> map, Subscriber subscriber) {
-        return RetrofitClient.getInstance().postWithChParam(url, map).subscribe(subscriber);
+    public Disposable postWithChParam(String url, Map<String, Object> map, Response response) {
+        return RetrofitClient.getInstance().postWithChParam(url, map).subscribe(response.getResponse(), response.getThrowable(), response.getComplete());
     }
 }

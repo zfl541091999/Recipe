@@ -18,8 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.lsxiao.apllo.Apollo;
+import com.lsxiao.apollo.core.Apollo;
 import com.zfl.recipe.R;
 import com.zfl.recipe.entity.RecipeDetail;
 import com.zfl.recipe.entity.RecipeFavorBean;
@@ -28,7 +27,6 @@ import com.zfl.recipe.mvp.view.BaseActivity;
 import com.zfl.recipe.recipe_detail.recipe_method.RecipeDetailMethodFragment;
 import com.zfl.recipe.utils.ApiUtil;
 import com.zfl.recipe.utils.ConstantUtil;
-import com.zfl.recipe.utils.LogUtil;
 import com.zfl.recipe.utils.ScreenUtil;
 
 import java.util.ArrayList;
@@ -241,7 +239,6 @@ public class RecipeDetailActivity extends BaseActivity
             recipeEventMap.put(ConstantUtil.CTG_TITLES, mDetailBean.result.ctgTitles);
             recipeEventMap.put(ConstantUtil.THUMBNAIL, mDetailBean.result.thumbnail);
             recipeEventMap.put(ConstantUtil.NAME, mDetailBean.result.name);
-            LogUtil.e("param:" + new Gson().toJson(recipeEventMap));
         }
         map.put(RecipeFavorBean.class, recipeEventMap);
         return map;
@@ -351,7 +348,7 @@ public class RecipeDetailActivity extends BaseActivity
         mIsFavor = true;
         showFavorIcon(mIsFavor);
         //发送收藏菜谱列表更新的通知
-        Apollo.get().send(ConstantUtil.FAVOR_RECIPE_LIST_UPDATE);
+        Apollo.emit(ConstantUtil.FAVOR_RECIPE_LIST_UPDATE);
     }
 
 
@@ -364,7 +361,7 @@ public class RecipeDetailActivity extends BaseActivity
         mIsFavor = false;
         showFavorIcon(mIsFavor);
         //发送收藏菜谱列表更新的通知
-        Apollo.get().send(ConstantUtil.FAVOR_RECIPE_LIST_UPDATE);
+        Apollo.emit(ConstantUtil.FAVOR_RECIPE_LIST_UPDATE);
     }
 
     public void isFavorRecipe(RecipeFavorBean bean)

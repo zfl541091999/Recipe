@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 import android.widget.Toast;
 
-import com.lsxiao.apllo.Apollo;
+import com.lsxiao.apollo.core.Apollo;
 import com.zfl.recipe.R;
 import com.zfl.recipe.entity.RecipeInfo;
 import com.zfl.recipe.entity.recipe_list.RecipeListBean;
@@ -27,7 +27,8 @@ import java.util.Map;
 
 import butterknife.Bind;
 import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import rx.Observable;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 /**
  * @Description
@@ -36,7 +37,7 @@ import rx.Observable;
  */
 
 public class RecipeListFragment extends BaseFragment implements BGARefreshLayout.BGARefreshLayoutDelegate,
-        CommonRecyclerViewAdapter.AdapterTemplate, CommonRecyclerViewAdapter.AdapterObservable, BaseFragment.OnUserVisibleHintListener
+        CommonRecyclerViewAdapter.AdapterTemplate, CommonRecyclerViewAdapter.AdapterEmitter, BaseFragment.OnUserVisibleHintListener
 {
 
     @Bind(R.id.rvRecipeList)
@@ -158,7 +159,7 @@ public class RecipeListFragment extends BaseFragment implements BGARefreshLayout
         //3.之前还没有发送过更新
         String mainBgUrl = getMainBgUrl();
         if (getUserVisibleHint() && mIsRefresh && (!mIsUpdateMainBgSend)) {
-            Apollo.get().send(ConstantUtil.UPDATE_MAIN_BACKGROUND, mainBgUrl);
+            Apollo.emit(ConstantUtil.UPDATE_MAIN_BACKGROUND, mainBgUrl);
             mIsUpdateMainBgSend = true;
         }
     }
@@ -260,11 +261,7 @@ public class RecipeListFragment extends BaseFragment implements BGARefreshLayout
         }
     }
 
-    @Override
-    public void observable(Observable<Object> observable)
-    {
 
-    }
 
     @Override
     public Map<Class<?>, Integer> getItemViewType()
@@ -289,7 +286,7 @@ public class RecipeListFragment extends BaseFragment implements BGARefreshLayout
             //表示滑动到这个Fragment了，如果已经拥有数据，可以发送更新背景图的请求
             if (mRecipeList != null && mRecipeList.size() != 0 && !mIsUpdateMainBgSend) {
                 String mainBgUrl = getMainBgUrl();
-                Apollo.get().send(ConstantUtil.UPDATE_MAIN_BACKGROUND, mainBgUrl);
+                Apollo.emit(ConstantUtil.UPDATE_MAIN_BACKGROUND, mainBgUrl);
                 mIsUpdateMainBgSend = true;
             }
         } else {
@@ -297,5 +294,22 @@ public class RecipeListFragment extends BaseFragment implements BGARefreshLayout
             //将此布尔值置为false，以便用户再滑动回来后再次发送更新主页背景图的请求
             mIsUpdateMainBgSend = false;
         }
+    }
+
+    @Override
+    public void emitter(Observable<Object> observable)
+    {
+        observable.subscribe(new Consumer<Object>()
+        {
+            @Override
+            public void accept(Object o) throws Exception
+            {
+                if (o instanceof Map) {
+                    Map map = (Map) o;
+                    int position = Integer.parseInt(map.get("position").toString());
+                    Toast.makeText(getActivity(), "position:" + position + " 你点击了" + mRecipeList.get(position).name + "的图片!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

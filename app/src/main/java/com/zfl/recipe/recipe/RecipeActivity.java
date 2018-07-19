@@ -30,7 +30,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-import com.lsxiao.apllo.annotations.Receive;
+import com.lsxiao.apollo.core.annotations.Receive;
 import com.zfl.recipe.R;
 import com.zfl.recipe.entity.recipe.RecipeCategoryBean;
 import com.zfl.recipe.mvp.view.BaseActivity;
@@ -292,7 +292,7 @@ public class RecipeActivity extends BaseActivity implements IBaseView
         mIsAppBarLayoutBgShow = show;
     }
 
-    @Receive(tag = ConstantUtil.UPDATE_MAIN_BACKGROUND)
+    @Receive(ConstantUtil.UPDATE_MAIN_BACKGROUND)
     public void receiveUpdateMainBg(final String bgUrl)
     {
         mIvRecipeLoading.setVisibility(View.VISIBLE);

@@ -1,11 +1,11 @@
 package com.zfl.recipe.utils;
 
 import android.Manifest;
-import android.app.Activity;
 
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.zfl.recipe.mvp.view.BaseActivity;
 
-import rx.functions.Action1;
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -23,22 +23,37 @@ public class PermissionsUtil
      * @param activity
      * @param runnable 获取权限后统一执行
      */
-    public static void requestPermissions(final Activity activity,
+    public static void requestPermissions(final BaseActivity activity,
                                           final Runnable runnable,
                                           final String... permissions)
     {
-        RxPermissions.getInstance(activity).request(permissions).subscribe(new Action1<Boolean>()
+
+        final RxPermissions rxPermissions = new RxPermissions(activity);
+        rxPermissions.request(permissions).subscribe(new Consumer<Boolean>()
         {
             @Override
-            public void call(Boolean aBoolean)
+            public void accept(Boolean aBoolean) throws Exception
             {
-                if (aBoolean)
+                if (aBoolean) {
                     runnable.run();
-                else
-                    RxPermissions.getInstance(activity).shouldShowRequestPermissionRationale
-                            (activity, permissions);
+                } else {
+                    rxPermissions.shouldShowRequestPermissionRationale(activity, permissions);
+                }
             }
         });
+        //0.7.1过时的调用方法，现在是0.10.2
+//        RxPermissions.getInstance(activity).request(permissions).subscribe(new Action1<Boolean>()
+//        {
+//            @Override
+//            public void call(Boolean aBoolean)
+//            {
+//                if (aBoolean)
+//                    runnable.run();
+//                else
+//                    RxPermissions.getInstance(activity).shouldShowRequestPermissionRationale
+//                            (activity, permissions);
+//            }
+//        });
     }
 
     /**
@@ -48,7 +63,7 @@ public class PermissionsUtil
      * @param runnable 获取权限后执行
      */
 
-    public static void requestCamera(final Activity activity,
+    public static void requestCamera(final BaseActivity activity,
                                      final Runnable runnable)
     {
         requestPermissions(activity, runnable, Manifest.permission.CAMERA);
@@ -60,7 +75,7 @@ public class PermissionsUtil
      * @param activity
      * @param runnable 获取权限后执行
      */
-    public static void requestLocation(final Activity activity,
+    public static void requestLocation(final BaseActivity activity,
                                        final Runnable runnable)
     {
         requestPermissions(activity, runnable, Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -73,7 +88,7 @@ public class PermissionsUtil
      * @param activity
      * @param runnable 获取权限后执行
      */
-    public static void requestCall(final Activity activity,
+    public static void requestCall(final BaseActivity activity,
                                    final Runnable runnable)
     {
         requestPermissions(activity, runnable, Manifest.permission.CALL_PHONE);
@@ -86,7 +101,7 @@ public class PermissionsUtil
      * @param runnable 获取权限后执行
      */
     @Deprecated
-    public static void requestReadStorage(final Activity activity,
+    public static void requestReadStorage(final BaseActivity activity,
                                           final Runnable runnable)
     {
         requestPermissions(activity, runnable, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -99,7 +114,7 @@ public class PermissionsUtil
      * @param runnable 获取权限后执行
      */
     @Deprecated
-    public static void requestWriteStorage(final Activity activity,
+    public static void requestWriteStorage(final BaseActivity activity,
                                            final Runnable runnable)
     {
         requestPermissions(activity, runnable, Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -111,7 +126,7 @@ public class PermissionsUtil
      * @param activity
      * @param runnable 获取权限后执行
      */
-    public static void requestReadWriteStorage(final Activity activity,
+    public static void requestReadWriteStorage(final BaseActivity activity,
                                                final Runnable runnable)
     {
         requestPermissions(activity, runnable, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest

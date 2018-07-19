@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.lsxiao.apllo.Apollo;
-import com.lsxiao.apllo.entity.SubscriptionBinder;
+import com.lsxiao.apollo.core.Apollo;
+import com.lsxiao.apollo.core.contract.ApolloBinder;
 import com.zfl.recipe.mvp.presenter.BasePresenter;
 import com.zfl.recipe.utils.LogUtil;
 
@@ -28,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
     //start函数通常只调用一次，此布尔值是为了保证解锁，切换应用时start函数不被调用多次
     protected boolean mStartAlready = false;
     //Apollo通信的binder
-    private SubscriptionBinder mBinder;
+    private ApolloBinder mBinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState)
@@ -37,7 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
         bindContentView(getLayoutResID());
         mContext = this;
         mPresenter = new BasePresenter(this);
-        mBinder = Apollo.get().bind(this);
+        mBinder = Apollo.bind(this);
         initData();
         initView();
     }

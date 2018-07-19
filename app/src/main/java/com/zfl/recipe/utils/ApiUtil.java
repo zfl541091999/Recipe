@@ -17,11 +17,11 @@ public class ApiUtil
 
     public static final String URL_RECIPE_DETAIL = "http://apicloud.mob.com/v1/cook/menu/query";
 
-    public static final String URL_ADD_FAVOR_RECIPE = "http://localhost:8080/zfl_recipe/recipe/insertFavorRecipe";
+    public static final String URL_ADD_FAVOR_RECIPE = "http://192.168.1.244:9090/zfl_recipe/recipe/insertFavorRecipe";
 
-    public static final String URL_DELETE_FAVOR_RECIPE = "http://localhost:8080/zfl_recipe/recipe/deleteFavorRecipe";
+    public static final String URL_DELETE_FAVOR_RECIPE = "http://192.168.1.244:9090/zfl_recipe/recipe/deleteFavorRecipe";
 
-    public static final String URL_IS_FAVOR_RECIPE = "http://localhost:8080/zfl_recipe/recipe/isFavorRecipe";
+    public static final String URL_IS_FAVOR_RECIPE = "http://192.168.1.244:9090/zfl_recipe/recipe/isFavorRecipe";
 
-    public static final String URL_GET_FAVOR_RECIPE_LIST = "http://localhost:8080/zfl_recipe/recipe/getAllFavorRecipe";
+    public static final String URL_GET_FAVOR_RECIPE_LIST = "http://192.168.1.244:9090/zfl_recipe/recipe/getAllFavorRecipe";
 }

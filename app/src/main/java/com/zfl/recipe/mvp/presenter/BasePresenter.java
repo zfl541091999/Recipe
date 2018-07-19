@@ -2,12 +2,12 @@ package com.zfl.recipe.mvp.presenter;
 
 import com.zfl.recipe.mvp.model.BaseModel;
 import com.zfl.recipe.mvp.view.IBaseView;
-import com.zfl.recipe.request.ResponseSubscriber;
+import com.zfl.recipe.request.Response;
 import com.zfl.recipe.utils.OKHttpCacheUtil;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import okhttp3.Cache;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * @Description
@@ -20,7 +20,7 @@ public class BasePresenter
     protected IBaseView view;
 
     //为了能够统一管理正在进行的后台任务
-    private CompositeSubscription sub = new CompositeSubscription();
+    private CompositeDisposable dis = new CompositeDisposable();
 
     protected BaseModel model;
 
@@ -45,7 +45,7 @@ public class BasePresenter
             cache = OKHttpCacheUtil.noCache();
         }
         if (isShowLoading) view.showLoading();
-        addSub(model.get(url, view.getParamsMap().get(clazz), cache, new ResponseSubscriber(clazz, view)));
+        addDis(model.get(url, view.getParamsMap().get(clazz), cache, new Response(clazz, view)));
     }
 
     /**
@@ -55,26 +55,24 @@ public class BasePresenter
      */
     public void post(String url, Class clazz, boolean isShowLoading, boolean haveChParam) {
         if (isShowLoading) view.showLoading();
-        Subscription subscription;
+        Disposable disposable;
         if (haveChParam) {
-            subscription = model.postWithChParam(url, view.getParamsMap().get(clazz), new ResponseSubscriber(clazz, view));
+            disposable = model.postWithChParam(url, view.getParamsMap().get(clazz), new Response(clazz, view));
         } else {
-            subscription = model.post(url, view.getParamsMap().get(clazz), new ResponseSubscriber(clazz, view));
+            disposable = model.post(url, view.getParamsMap().get(clazz), new Response(clazz, view));
         }
-        addSub(subscription);
+        addDis(disposable);
     }
 
 
-    protected void addSub(Subscription subscription) {
-        sub.add(subscription);
+    public void addDis(Disposable disposable) {
+        dis.add(disposable);
     }
 
     /**
      * 取消后台任务，防止内存溢出
      */
     public void unRegRx() {
-        if (sub.hasSubscriptions()) {
-            sub.unsubscribe();
-        }
+        dis.clear();
     }
 }

@@ -5,8 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.Subscriber;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.annotations.NonNull;
 
 /**
  * @Description
@@ -19,7 +21,7 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder
     protected Context context;
     private CommonRecyclerViewAdapter adapter;
     protected Observable<Object> observable;
-    protected Subscriber<Object> sub;
+    protected ObservableEmitter<Object> emi;
     public BaseViewHolder(View itemView)
     {
         super(itemView);
@@ -28,14 +30,14 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder
 
     }
     protected void createObservable(){
-        observable = Observable.create(new Observable.OnSubscribe<Object>()
+
+        observable = Observable.create(new ObservableOnSubscribe<Object>()
         {
             @Override
-            public void call(Subscriber<? super Object> subscriber)
+            public void subscribe(@NonNull ObservableEmitter<Object> emitter) throws Exception
             {
-                sub = subscriber;
+                emi = emitter;
             }
-
         });
     }
 

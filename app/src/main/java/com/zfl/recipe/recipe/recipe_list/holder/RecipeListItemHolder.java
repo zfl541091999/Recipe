@@ -17,7 +17,11 @@ import com.zfl.recipe.utils.ScreenUtil;
 import com.zfl.recipe.widget.adpter.BaseViewHolder;
 import com.zfl.recipe.widget.glide.GlideRoundTransform;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * @Description
@@ -41,6 +45,7 @@ public class RecipeListItemHolder extends BaseViewHolder<RecipeInfo>
     public RecipeListItemHolder(View itemView)
     {
         super(itemView);
+        createObservable();
     }
 
     @Override
@@ -85,5 +90,16 @@ public class RecipeListItemHolder extends BaseViewHolder<RecipeInfo>
         textView.setText(text);
         textView.setBackground(BGUtil.gradientDr(context, ScreenUtil.dp2px(context, 0.5f), 10f, R.color.colorPrimary, R.color.white));
         mLlRecipeListItemLabelArea.addView(textView);
+    }
+
+    @OnClick({R.id.ivRecipeListItemThumbnail})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ivRecipeListItemThumbnail:
+                Map<String, Object> map = new HashMap<>();
+                map.put("position", getAdapterPosition());
+                emi.onNext(map);
+                break;
+        }
     }
 }

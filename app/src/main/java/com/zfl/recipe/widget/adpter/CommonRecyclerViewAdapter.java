@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import java.util.List;
 import java.util.Map;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * @Description
@@ -23,7 +23,7 @@ public class CommonRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHold
     protected List mDatas;
     protected Context mContext;
     protected AdapterTemplate mTemplate;
-    protected AdapterObservable mAdapterObservable;
+    protected AdapterEmitter mAdapterEmitter;
     protected OnItemClick mClick;
 
     /**
@@ -31,13 +31,13 @@ public class CommonRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHold
      * @param context 上下文
      * @param datas 数据集
      * @param template item模板接口
-     * @param adapterObservable 回调给RxAndroid的接口
+     * @param adapterEmitter 回调给RxAndroid的接口
      */
-    public CommonRecyclerViewAdapter(Context context, List datas, AdapterTemplate template,AdapterObservable adapterObservable){
+    public CommonRecyclerViewAdapter(Context context, List datas, AdapterTemplate template,AdapterEmitter adapterEmitter){
         mContext = context;
         mDatas = datas;
         mTemplate = template;
-        mAdapterObservable = adapterObservable;
+        mAdapterEmitter = adapterEmitter;
     }
 
     @Override
@@ -65,8 +65,8 @@ public class CommonRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHold
     {
         holder.bindViewHolder(mDatas.get(position), position);
         holder.setAdapter(this);
-        if (mAdapterObservable != null) {
-            mAdapterObservable.observable(holder.getObservable());
+        if (mAdapterEmitter != null) {
+            mAdapterEmitter.emitter(holder.getObservable());
         }
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
@@ -114,12 +114,12 @@ public class CommonRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHold
          */
         SparseArray<Class<? extends BaseViewHolder>> getViewHolder();
     }
-    public interface AdapterObservable
+    public interface AdapterEmitter
     {
         /**
          * Rx Observable, Integer was position
          */
-        void observable(Observable<Object> observable);
+        void emitter(Observable<Object> observable);
 
     }
 

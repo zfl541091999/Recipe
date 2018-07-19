@@ -2,11 +2,11 @@ package com.zfl.recipe;
 
 import android.app.Application;
 
-import com.lsxiao.apllo.Apollo;
-import com.lsxiao.apollo.generate.SubscriberBinderImplement;
+import com.lsxiao.apollo.core.Apollo;
 import com.zfl.recipe.request.RetrofitClient;
 
-import rx.android.schedulers.AndroidSchedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
 
 /**
  * @Description
@@ -21,7 +21,8 @@ public class RecipeApplication extends Application
     {
         super.onCreate();
         RetrofitClient.init(this);
-        Apollo.get().init(SubscriberBinderImplement.instance(), AndroidSchedulers.mainThread());
+//        Apollo.get().init(SubscriberBinderImplement.instance(), AndroidSchedulers.mainThread());
+        Apollo.init(AndroidSchedulers.mainThread(), this);
         //初始化GreenDao(现在从网络获取数据库)
 //        GreenDaoUtil.init(this);
     }
