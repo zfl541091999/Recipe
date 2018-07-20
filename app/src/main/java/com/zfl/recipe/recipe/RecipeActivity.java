@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -79,8 +78,6 @@ public class RecipeActivity extends BaseActivity implements IBaseView
     AppBarLayout mAblRecipeMain;
     @Bind(R.id.ivRecipeLoading)
     ImageView mIvRecipeLoading;
-    @Bind(R.id.rlRecipeBigImgArea)
-    RelativeLayout mRlRecipeBigImgArea;
 
     private AnimationDrawable mLoadingDrawable;
 
