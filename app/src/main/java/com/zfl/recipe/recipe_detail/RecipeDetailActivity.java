@@ -6,7 +6,6 @@ import android.graphics.Outline;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -101,11 +100,7 @@ public class RecipeDetailActivity extends BaseActivity
         }
 
         setSupportActionBar(mTbRecipeDetail);
-        ActionBar actionbar = getSupportActionBar();
-        if (actionbar != null)
-        {
-            actionbar.setDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTbRecipeDetail.setNavigationOnClickListener(new View.OnClickListener()
         {
             @Override
