@@ -13,7 +13,6 @@ import android.view.ViewOutlineProvider;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -62,8 +61,6 @@ public class RecipeDetailActivity extends BaseActivity
 
     private List<Fragment> mRecipeMethodFrgs;
 
-    private TextView mTvToolBarTitle;
-
     private String mToolBarTitle = "";
 
     private boolean mIsFavor = false;//判断该菜谱是否为收藏菜谱
@@ -85,19 +82,6 @@ public class RecipeDetailActivity extends BaseActivity
     protected void initView()
     {
         mTbRecipeDetail.setTitle(mToolBarTitle);
-        //取得toolbar中titleTextView的引用
-        for (int i = 0; i < mTbRecipeDetail.getChildCount(); i++)
-        {
-            View v = mTbRecipeDetail.getChildAt(i);
-            if (v != null && v instanceof TextView)
-            {
-                TextView tv = (TextView) v;
-                if (mToolBarTitle.equals(tv.getText().toString()))
-                {
-                    mTvToolBarTitle = tv;
-                }
-            }
-        }
 
         setSupportActionBar(mTbRecipeDetail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
