@@ -122,6 +122,8 @@ public class RecipeActivity extends BaseActivity implements IBaseView
 
     //加载的进度对话框
     private ProgressDialog mLoadingDialog;
+    //为了防止重复加载背景图片
+    private String mBgUrl;
 
     @Override
     protected int getLayoutResID()
@@ -304,6 +306,7 @@ public class RecipeActivity extends BaseActivity implements IBaseView
     @Receive(ConstantUtil.UPDATE_MAIN_BACKGROUND)
     public void receiveUpdateMainBg(final String bgUrl)
     {
+        if (bgUrl.equals(mBgUrl)) return;
         mIvRecipeLoading.setVisibility(View.VISIBLE);
         mLoadingDrawable.start();
         mIvRecipeMainBg.setImageDrawable(null);
@@ -325,6 +328,7 @@ public class RecipeActivity extends BaseActivity implements IBaseView
                                 {   //加载成功监听
                                     mLoadingDrawable.stop();
                                     mIvRecipeLoading.setVisibility(View.INVISIBLE);
+                                    mBgUrl = bgUrl;
                                     super.onResourceReady(resource, animation);
                                 }
 
