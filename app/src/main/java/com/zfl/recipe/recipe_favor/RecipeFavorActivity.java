@@ -3,7 +3,6 @@ package com.zfl.recipe.recipe_favor;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -91,10 +90,7 @@ public class RecipeFavorActivity extends BaseActivity implements BGARefreshLayou
     {
         mTbRecipeFavor.setTitle("收藏菜谱");
         setSupportActionBar(mTbRecipeFavor);
-        ActionBar actionbar = getSupportActionBar();
-        if (actionbar != null) {
-            actionbar.setDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTbRecipeFavor.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
